@@ -6,7 +6,7 @@ if not exist "venv" (
     python -m venv venv
 )
 
-REM Verificar si el archivo activate.bat existe en venv\Scripts (Windows)
+REM Verificar si el archivo activate existe en venv/Scripts (Windows)
 if exist "venv\Scripts\activate.bat" (
     call venv\Scripts\activate.bat
 ) else (
@@ -14,23 +14,25 @@ if exist "venv\Scripts\activate.bat" (
     exit /b 1
 )
 
-REM Asegurarse de que se usen pip y pytest del entorno virtual
-set PIP_PATH=venv\Scripts\pip.exe
-set PYTEST_PATH=venv\Scripts\pytest.exe
-
 echo Instalando dependencias...
-"%PIP_PATH%" install --upgrade pip
-"%PIP_PATH%" install -r requirements.txt
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 
-REM Crear carpeta de reportes si no existe
-if not exist reports (
-    mkdir reports
+REM Limpiar y crear directorio de reportes
+if exist reports (
+    rmdir /s /q reports
 )
+mkdir reports
 
 echo Ejecutando pruebas con pytest...
-"%PYTEST_PATH%" tests/ --junitxml=reports/test-results.xml --html=reports/test-results.html --self-contained-html
+pytest tests/ --junitxml=reports/test-results.xml --html=reports/test-results.html --self-contained-html
+
+REM Verificar que se haya generado el reporte HTML
+if exist reports\test-results.html (
+    echo Reporte HTML generado correctamente.
+) else (
+    echo ERROR: No se generó el reporte HTML.
+    exit /b 1
+)
 
 echo Pruebas finalizadas. Resultados guardados en la carpeta reports.
-exit /b %ERRORLEVEL%
-
-
