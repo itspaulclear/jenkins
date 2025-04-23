@@ -1,31 +1,27 @@
 @echo off
-setlocal
+echo "activando el entorno virtual..."
 
-echo Verificando entorno virtual...
+REM Verificar si el directorio venv existe
 if not exist "venv" (
     python -m venv venv
 )
 
-echo Instalando dependencias...
-venv\Scripts\python.exe -m pip install --upgrade pip
-venv\Scripts\python.exe -m pip install -r requirements.txt
-
-REM Limpiar y crear carpeta de reportes
-if exist reports (
-    rmdir /s /q reports
-)
-mkdir reports
-
-echo Ejecutando pruebas con pytest...
-venv\Scripts\python.exe -m pytest tests/ --junitxml=reports/test-results.xml --html=reports/test-results.html --self-contained-html
-
-REM Verificar si se generó el reporte
-if exist reports\test-results.html (
-    echo Reporte generado correctamente.
+REM Verificar si el archivo activate existe en venv/Scripts (Windows)
+if exist "venv\Scripts\activate" (
+    call venv\Scripts\activate
 ) else (
-    echo ERROR: No se generó el reporte HTML.
-    exit /b 1
+    echo "Error: No se pudo activar el entorno virtual"
+    exit 1
 )
 
-echo Pruebas finalizadas. Resultados en carpeta reports.
-endlocal
+echo "instalando dependencias..."
+pip install --upgrade pip
+pip install -r requirements.txt
+
+mkdir -p reports
+
+echo "ejecutando pruebas con pytest"
+pytest tests/ --junitxml=reports/test-results.xml --html=reports/test-results.html --self-contained-html
+
+echo "pruebas finalizadas resultados en reports"
+
