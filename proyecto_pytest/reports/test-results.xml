@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="0.085" timestamp="2025-04-23T12:48:42.277221+02:00" hostname="LAP11058"><testcase classname="tests.test_multiplicacion" name="test_multiplicar" time="0.001" /><testcase classname="tests.test_suma" name="test_suma" time="0.000" /><testcase classname="tests.test_suma" name="test_suma_fail" time="0.001"><failure message="assert 3 == 4&#10; +  where 3 = suma(1, 2)">def test_suma_fail():
-&gt;       assert suma(1, 2) == 4
-E       assert 3 == 4
-E        +  where 3 = suma(1, 2)
-
-tests\test_suma.py:13: AssertionError</failure></testcase></testsuite></testsuites>
