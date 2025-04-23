@@ -1,23 +1,25 @@
 @echo off
 echo "activando el entorno virtual..."
-if[ ! -d "venv" ]; then
-    python -m venv venv
-fi
 
-if [ -f "venv/bin/activate" ]; then
-    call venv/bin/activate
-elif [ -f "venv/Scripts/activate" ]; then
-    call venv/Scripts/activate
-else
+REM Verificar si el directorio venv existe
+if not exist "venv" (
+    python -m venv venv
+)
+
+REM Verificar si el archivo activate existe en venv/Scripts (Windows)
+if exist "venv\Scripts\activate" (
+    call venv\Scripts\activate
+) else (
     echo "Error: No se pudo activar el entorno virtual"
     exit 1
-fi
+)
 
 echo "instalando dependencias..."
-pip install --upgrade pip --break-system-packages
-pip install -r requirements.txt --break-system-packages
+pip install --upgrade pip
+pip install -r requirements.txt
 
 echo "ejecutando pruebas con pytest"
-venv/bin/python -m pytest tests/ --junitxml=reports/test-results.xml --html=reports/test-results.html --self-contained-html
+pytest tests/ --junitxml=reports/test-results.xml --html=reports/test-results.html --self-contained-html
 
 echo "pruebas finalizadas resultados en reports"
+
