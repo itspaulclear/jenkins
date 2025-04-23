@@ -11,5 +11,5 @@ def test_suma():
 
 @pytest.mark.xfail
 def test_suma_fail():
-    assert suma(1, 2) == 4
+    assert suma(1, 2) == 3
 
