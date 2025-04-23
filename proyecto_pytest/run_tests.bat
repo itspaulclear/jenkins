@@ -1,10 +1,9 @@
-#!/bin/bash
-
+@echo off
 echo "activando el entorno virtual"
-source venv/bin/activate
+call venv\Scripts\activate
 
 echo "instalando dependencias"
-pip install -r rquirements.text
+pip install -r requirements.txt
 
 echo "ejecutando pruebas con pytest"
 pytest tests/ --junitxml=reports/test-results.xml --html=reports/test-results.html --self-contained-html
